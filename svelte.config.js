@@ -21,11 +21,4 @@ const config = {
 	}
 };
 
-export default {
-	kit: {
-	  adapter: adapter(),
-	  paths: {
-		base: '/myapp',
-	  },
-	},
-  };
+export default config;
