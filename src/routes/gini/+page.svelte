@@ -1,6 +1,3 @@
-<script>
-  import { base } from '$app/paths';
-</script>
 
 <nav>
 	<a href="/">gdp</a>

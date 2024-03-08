@@ -1,7 +1,3 @@
-<script>
-  import { base } from '$app/paths';
-</script>
-
 <nav>
 	<a href="/">gdp</a>
 	<a href="/gini">gini</a>
