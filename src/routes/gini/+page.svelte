@@ -1,4 +1,3 @@
-
 <nav>
 	<a href="/">gdp</a>
 	<a href="/gini">gini</a>
