@@ -6,7 +6,7 @@
 <style>
   /* Background image styling */
   .background {
-    background-image: url('DALL·E 2024-03-07 21.03.12 - Create an image that visualizes the concept of GDP and Gini coefficient across different countries on a world map. The map should include visual cues .webp'); /* Replace with the actual image path */
+    background-image: url('back.png'); /* Replace with the actual image path */
     background-size: cover;
     height: 100vh;
     display: flex;
