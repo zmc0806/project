@@ -2,8 +2,9 @@
   import { goto } from '$app/navigation';
   import { base } from '$app/paths';
 </script>
-<button on:click={() => goto(`${base}/gdp`)}>Learn more</button>
-<button on:click={() => goto(`${base}/gini`)}>Learn more</button>
+
+<button on:click={() => goto(`${base}/gdp`)}>gdp</button>
+<button on:click={() => goto(`${base}/gini`)}>gini</button>
 
 
 
