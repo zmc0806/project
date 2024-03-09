@@ -3,13 +3,15 @@
   import { base } from '$app/paths';
 
   function navigateToPage(path) {
-    goto(path);
-    window.location.reload();
+    goto(path, {
+      keepFocus: true, 
+      replaceState: true
+    });
   }
 </script>
 
-<button on:click={() => goto(`${base}/gdp`)}>gdp</button>
-<button on:click={() => goto(`${base}/gini`)}>gini</button>
+<button on:click={() => navigateToPage(`${base}/gdp`)}>gdp</button>
+<button on:click={() => navigateToPage(`${base}/gini`)}>gini</button>
 
 
 
