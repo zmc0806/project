@@ -1,3 +1,10 @@
+
+<script>
+    import { onMount } from 'svelte';
+
+
+</script>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -181,8 +188,8 @@ svgContainer.append("text")
     .attr('height', barChartHeight + margin.top + margin.bottom)
     .append('g')
     .attr('transform', `translate(${margin.left},${margin.top})`);
-
-
+  
+    onMount(async () => {
         // Load CSV data
         d3.csv("gdp-per-capita-worldbank.csv", function(error, data) {
             if (error) throw error;
@@ -194,7 +201,7 @@ svgContainer.append("text")
             years.forEach(year => {
                 yearSelector.append("option").text(year).attr("value", year);
             });
-
+    }
             // Initialize the map with the first available year
             updateMapForYear(years[0]);
         });
