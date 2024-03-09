@@ -26,7 +26,7 @@
 <style>
   /* Background image styling */
   .background {
-    background-image: url('image/back.png'); /* Replace with the actual image path */
+    background-image: url('image/back.webp'); /* Replace with the actual image path */
     background-size: cover;
     height: 100vh;
     display: flex;
