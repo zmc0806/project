@@ -2,12 +2,14 @@
   import { goto } from '$app/navigation';
   import { base } from '$app/paths';
 
-
+  async function navigateAndRefresh(url) {
+    await goto(url);
+    window.location.reload();
+  }
 </script>
 
-<button on:click={() => goto(`${base}/gdp`)}>gdp</button>
-<button on:click={() => goto(`${base}/gini`)}>gini</button>
-
+<button on:click={() => navigateAndRefresh(`${base}/gdp`)}>GDP</button>
+<button on:click={() => navigateAndRefresh(`${base}/gini`)}>GINI</button>
 
 
 <style>
