@@ -86,7 +86,7 @@
             function generateLineGraphData(countryName) {
         const countryData = csvData.filter(d => d.Entity === countryName);
         const years = countryData.map(d => +d.Year);
-        const gdpPerCapita = countryData.map(d => +d["Gini coefficient"]);
+        const gdpPerCapita = countryData.map(d => +d["GDP per capita, PPP (constant 2017 international $)"]);
 
         return {
             years: years,
@@ -174,7 +174,7 @@ svgContainer.append("text")
   .attr("text-anchor", "middle") // This centers the text (horizontally)
   .style("font-size", "24px") // Change the font size as needed
   .style("font-weight", "bold") // Optional: makes the text bold
-  .text("Gini Per Capita Over Time 1963 - 2022"); // Replace with your actual title
+  .text("GDP Per Capita Over Time 1990 - 2021"); // Replace with your actual title
             
     const barSvg = d3.select('body').append('svg')
     .attr('width', barChartWidth + margin.left + margin.right)
@@ -184,7 +184,7 @@ svgContainer.append("text")
 
 
         // Load CSV data
-        d3.csv("economic-inequality-gini-index.csv", function(error, data) {
+        d3.csv("gdp-per-capita-worldbank.csv", function(error, data) {
             if (error) throw error;
             csvData = data; // Store the CSV data globally
 
@@ -204,7 +204,7 @@ svgContainer.append("text")
         function updateMapForYear(selectedYear) {
             countryCasesMap = {}; // Reset the map
             csvData.filter(d => d.Year == selectedYear).forEach(d => {
-                countryCasesMap[d.Entity] = +d["Gini coefficient"];
+                countryCasesMap[d.Entity] = +d["GDP per capita, PPP (constant 2017 international $)"];
             });
 
             // Clear previous globe drawings and redraw
@@ -359,7 +359,7 @@ svgContainer.append("text")
 function updateBarChart(selectedYear) {
     // Filter and sort data
     const sortedData = csvData.filter(d => d.Year == selectedYear)
-        .sort((a, b) => b["Gini coefficient"] - a["Gini coefficient"])
+        .sort((a, b) => b["GDP per capita, PPP (constant 2017 international $)"] - a["GDP per capita, PPP (constant 2017 international $)"])
         .slice(0, 15); // Take top 15
 
         const maxBarHeight = barChartHeight / sortedData.length;
@@ -376,7 +376,7 @@ barSvg.selectAll(".bar")
     .attr("class", "bar")
     .attr("x", 0)
     .attr("y", d => yScale(d.Entity))
-    .attr("width", d => xScale(+d["Gini coefficient"]))
+    .attr("width", d => xScale(+d["GDP per capita, PPP (constant 2017 international $)"]))
     .attr("height", yScale.bandwidth()); // This uses the scale's computed bandwidth
     barSvg.selectAll(".bar")
   // ... (existing code for creating bars)
@@ -388,7 +388,7 @@ if (totalHeightRequired > barChartHeight) {
         .attr('height', totalHeightRequired + margin.top + margin.bottom);
 }
     // Update scales
-    xScale.domain([0, d3.max(sortedData, d => +d["Gini coefficient"])]);
+    xScale.domain([0, d3.max(sortedData, d => +d["GDP per capita, PPP (constant 2017 international $)"])]);
     yScale.domain(sortedData.map(d => d.Entity));
     barSvg.selectAll('*').remove();
     const g = barSvg.append('g')
@@ -415,7 +415,7 @@ if (totalHeightRequired > barChartHeight) {
         .attr('class', 'bar')
         .attr('x', 40)
         .attr('y', d => yScale(d.Entity))
-        .attr('width', d => xScale(+d["Gini coefficient"]))
+        .attr('width', d => xScale(+d["GDP per capita, PPP (constant 2017 international $)"]))
         .attr('height', yScale.bandwidth());
 
 
@@ -442,11 +442,11 @@ if (totalHeightRequired > barChartHeight) {
         .data(sortedData)
         .enter().append("text")
         .attr("class", "value")
-        .attr("x", d => xScale(d["Gini coefficient"]) + 120)
+        .attr("x", d => xScale(d["GDP per capita, PPP (constant 2017 international $)"]) + 120)
         .attr("y", d => yScale(d.Entity) + yScale.bandwidth() / 2 + 20 )
         .attr("dy", ".35em")
         .attr("text-anchor", "start")
-        .text(d => d["Gini coefficient"]);
+        .text(d => d["GDP per capita, PPP (constant 2017 international $)"]);
 }
 
         // Call updateBarChart when the year is selected
