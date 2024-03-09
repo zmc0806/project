@@ -2,7 +2,7 @@
   import { goto } from '$app/navigation';
 </script>
 
-<button on:click={() => goto('project/gdp')}>Go to GDP Page</button>
+<button on:click={() => goto('/gdp')}>Go to GDP Page</button>
 <button on:click={() => goto('project/gini')}>Go to Gini Page</button>
 
 <style>
