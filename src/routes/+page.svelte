@@ -1,6 +1,13 @@
 <script>
   import { goto } from '$app/navigation';
   import { base } from '$app/paths';
+
+  function navigateToPage(path) {
+    goto(path, {
+      keepFocus: true,
+      replaceState: true
+    });
+  }
 </script>
 
 <button on:click={() => goto(`${base}/gdp`)}>gdp</button>
