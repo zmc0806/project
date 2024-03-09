@@ -3,10 +3,8 @@
   import { base } from '$app/paths';
 
   function navigateToPage(path) {
-    goto(path, {
-      keepFocus: true,
-      replaceState: true
-    });
+    goto(path);
+    window.location.reload();
   }
 </script>
 
