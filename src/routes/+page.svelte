@@ -23,7 +23,7 @@
 <style>
   /* Background image styling */
   .background {
-    background-image: url('back.png'); /* Replace with the actual image path */
+    background-image: url('static/image/back.png'); /* Replace with the actual image path */
     background-size: cover;
     height: 100vh;
     display: flex;
