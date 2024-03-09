@@ -1,9 +1,11 @@
 <script>
   import { goto } from '$app/navigation';
+  import { base } from '$app/paths';
 </script>
+<button on:click={() => goto(`${base}/gdp`)}>Learn more</button>
+<button on:click={() => goto(`${base}/gini`)}>Learn more</button>
 
-<button on:click={() => goto('/gdp')}>Go to GDP Page</button>
-<button on:click={() => goto('project/gini')}>Go to Gini Page</button>
+
 
 <style>
   /* Background image styling */
