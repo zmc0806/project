@@ -1,7 +1,9 @@
 <script>
-  let url_gdp = "https://zmc0806.github.io/project/gdp"; // 指定网页的URL
-  let url_gini = "https://zmc0806.github.io/project/gini"; // 指定网页的URL
+  let url_gdp = "https://zmc0806.github.io/project/gdp"; 
+  let url_gini = "https://zmc0806.github.io/project/gini"; 
+  let url_home = "https://zmc0806.github.io/project/home";
 </script>
+<a href="{url_home}" target="_blank" rel="noopener noreferrer">HOME</a>
 
 <a href="{url_gdp}" target="_blank" rel="noopener noreferrer">GDP</a>
 
