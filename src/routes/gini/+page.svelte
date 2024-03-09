@@ -1,15 +1,11 @@
 <script>
-  import { goto } from '$app/navigation';
-  import { base } from '$app/paths';
-
-  async function navigateAndRefresh(url) {
-    await goto(url);
-    window.location.reload();
-  }
+  let url_gdp = "https://zmc0806.github.io/project/gdp"; // 指定网页的URL
+  let url_gini = "https://zmc0806.github.io/project/gini"; // 指定网页的URL
 </script>
 
-<button on:click={() => navigateAndRefresh(`${base}/gdp`)}>GDP</button>
-<button on:click={() => navigateAndRefresh(`${base}/gini`)}>GINI</button>
+<a href="{url_gdp}" target="_blank" rel="noopener noreferrer">GDP</a>
+
+<a href="{url_gini}" target="_blank" rel="noopener noreferrer">GINI</a>
 
 <!DOCTYPE html>
 <html>
@@ -142,7 +138,7 @@
     };
 
     const layout = {
-        title: `${countryName} - GDP Per Capita Over Time`,
+        title: `${countryName} - Gini Per Capita Over Time`,
     };
 
     Plotly.newPlot('lineGraphContainer', [trace1, trace2], layout);
@@ -163,7 +159,7 @@
     }];
 
     const layout = {
-        title: `${countryName} - GDP Per Capita Over Time`,
+        title: `${countryName} - Gini Per Capita Over Time`,
         xaxis: { title: 'Year' },
         yaxis: { title: 'GDP per capita' },
         width: 500, // Adjust width as needed
