@@ -359,8 +359,9 @@ svgContainer.append("text")
 function updateBarChart(selectedYear) {
     // Filter and sort data
     const sortedData = csvData.filter(d => d.Year == selectedYear)
-        .sort((a, b) => b["Gini coefficient"] - a["Gini coefficient"])
-        .slice(0, 15); // Take top 15
+        .sort((a, b) => a["Gini coefficient"] - b["Gini coefficient"])
+        .slice(0, 15); // Take bottom 15
+
 
         const maxBarHeight = barChartHeight / sortedData.length;
 
