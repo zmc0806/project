@@ -10,7 +10,7 @@
 <a href="{url_gini}" target="_blank" rel="noopener noreferrer">GINI</a>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <style>
           .bar {

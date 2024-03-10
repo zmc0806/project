@@ -10,7 +10,7 @@
 <a href="{url_gini}" target="_blank" rel="noopener noreferrer">GINI</a>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <style>
           .bar {
@@ -70,6 +70,9 @@
     <script>
         // Place this at the top of your D3.js script, after setting up the main SVG
 // Define axes here as well
+const giniColorScale = d3.scaleLinear()
+    .domain([0.2, 0.7]) // Assuming Gini values range from 0.2 to 0.7
+    .range(["green", "red"]);
 
         const width = 1200;
         const height = 700;
@@ -217,7 +220,7 @@ svgContainer.append("text")
             csvData.filter(d => d.Year == selectedYear).forEach(d => {
                 countryCasesMap[d.Entity] = +d["Gini coefficient"];
             });
-
+            updateGlobeColors(); 
             // Clear previous globe drawings and redraw
             svg.selectAll(".segment").remove(); // Clear previous countries
             svg.selectAll(".graticule").remove(); // Clear previous graticules
@@ -230,6 +233,7 @@ svgContainer.append("text")
             // Re-enable rotation after updating
             enableRotation();
             enableDrag();
+    
         }
 
 
@@ -248,12 +252,12 @@ svgContainer.append("text")
         }
 
         // Function to draw the globe
-        function drawGlobe() {
-
+        function drawGlobe(world) {
             d3.json('world-110m_with_names.v1.json', function(error, world) {
                 if (error) throw error;
 
                 const countries = topojson.feature(world, world.objects.countries).features;
+
              d3.selectAll(".segment")
             .on("mouseover", function(d) {
                 const countryName = d.properties.name;
@@ -271,7 +275,6 @@ svgContainer.append("text")
     const selectedYear = parseInt(document.getElementById("yearSelector").value);
     updateGraphWithHighlightedYear(countryName, selectedYear);
 });
-
     // First, generate or update the line graph for the hovered country
  svg.selectAll(".segment")
                     .data(countries)
@@ -280,21 +283,35 @@ svgContainer.append("text")
                     .attr("d", path)
                     .style("stroke", "#FFF") // Country borders
                     .style("stroke-width", "0.5px")
-                    .style("fill", d => countryCasesMap[d.properties.name] ? "#32CD32" : "#AAAAAA") // Fallback color if no data
+                    .style("fill", d => {
+        const giniValue = countryCasesMap[d.properties.name];
+        return giniValue ? giniColorScale(giniValue) : "#AAAAAA"; // Use the color scale for the fill, default color if no data
+    })
                     .on("mouseover", function(d) {
                     d3.select(this).style("fill", "#FFD700"); // Highlight color
                     const countryName = d.properties.name;
                     createLineGraph(countryName); // This line was corrected
                 })
+                
                 .on("mouseout", function(d) {
                     d3.select(this).style("fill", d => countryCasesMap[d.properties.name] ? "#32CD32" : "#AAAAAA"); // Reset color
                     // Clear the line graph container
                     d3.select('#lineGraphContainer').html(''); // This line ensures the line graph is cleared on mouseout
                 });
+          
         });
+    
 
         }
-
+        function updateGlobeColors() {
+    svg.selectAll(".country")
+        .transition()
+        .duration(250)
+        .attr("fill", d => {
+            const giniValue = countryCasesMap[d.properties.name];
+            return giniValue ? giniColorScale(giniValue) : "grey"; // Default to grey if no data
+        });
+}
         function showCountryName(name, data) {
             const displayData = data || 'No data'; // Ensure there's a fallback if no data is available
             svg.append("text")
@@ -469,7 +486,7 @@ if (totalHeightRequired > barChartHeight) {
 
         // Initialize the bar chart with the first available year
         updateBarChart(years[0]);
-
+        
         
     </script>
 </body>
