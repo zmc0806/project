@@ -195,7 +195,7 @@ svgContainer.append("text")
 
 
         // Load CSV data
-        d3.csv("economic-inequality-gini-index.csv", function(error, data) {
+        d3.csv("economic-inequality-gini-index-filled-2000-2022.csv", function(error, data) {
             if (error) throw error;
             csvData = data; // Store the CSV data globally
 
