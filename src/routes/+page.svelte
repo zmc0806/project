@@ -1,28 +1,16 @@
 <script>
-  import { goto, beforeNavigate } from '$app/navigation';
-  import { base } from '$app/paths';
+import { goto, beforeNavigate } from '$app/navigation';
+import { base } from '$app/paths';
 
+async function navigateAndRefresh(url) {
+  await goto(url);
+  window.location.reload();
+}
 
-  async function navigateAndRefresh(url) {
-    await goto(url);
-    window.location.reload();
-  }
-
-
-
-
-
-
-
-
-
-
-
-
-
-  const projectTitle = 'DSC106 Final Project';
-  const description = 'This project explores the trends and patterns of GDP (Gross Domestic Product) across different countries and regions. GDP is a crucial economic indicator that measures the total value of goods and services produced within a country during a specific period. By analyzing GDP data, we aim to gain insights into economic growth, development, and potential factors that influence a nation\'s economic performance.';
-  const authors = 'Mianchen Zhang and Yulin Chen';
+const projectTitle = ' Economic Indicator Decoded';
+const description = 'This project explores the trends and patterns of GDP (Gross Domestic Product) across different countries and regions. GDP is a crucial economic indicator that measures the total value of goods and services produced within a country during a specific period. By analyzing GDP data, we aim to gain insights into economic growth, development, and potential factors that influence a nation\'s economic performance.';
+const group = 'Team: Data Genius!'
+const authors = 'Mianchen Zhang and Yulin Chen';
 </script>
 
 <button on:click={() => navigateAndRefresh(`${base}/home`)}>HOME</button>
@@ -34,6 +22,10 @@
     <div class="content">
       <h1>{projectTitle}</h1>
       <p>{description}</p>
+      <p>Click the buttons in the top left to explore visualizations.</p>
+      <div class="authors">
+        <span>{group}</span>
+      </div>
       <div class="authors">
         <span>{authors}</span>
       </div>
@@ -65,10 +57,10 @@
     margin-bottom: 1rem;
   }
 
-  p {
+  .content p {
     font-size: 1.2rem;
     line-height: 1.5;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
   }
 
   .authors {
