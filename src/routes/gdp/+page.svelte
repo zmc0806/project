@@ -83,6 +83,14 @@
         const graticule = d3.geoGraticule();
         let countryCasesMap = {};
         let csvData; // Global variable to store CSV data
+        const gdpThresholds = [500, 1000, 5000, 10000, 20000, 50000];
+        const colorRange = ["#f7fcf5", "#e5f5e0", "#c7e9c0", "#a1d99b", "#74c476", "#31a354", "#006d2c"];
+
+        // Create a threshold scale
+        const colorScale = d3.scaleThreshold()
+            .domain(gdpThresholds)
+            .range(colorRange);
+            
         const margin = { top: 20, right: 240, bottom: 70, left: 70 },
               barChartWidth = 1000 ,
               barChartHeight = 500;
@@ -200,6 +208,7 @@ svgContainer.append("text")
             csvData = data; // Store the CSV data globally
 
             // Populate the year selector with unique years from the data
+            
             const years = Array.from(new Set(data.map(d => d.Year))).sort();
             const yearSelector = d3.select("#yearSelector");
             years.forEach(year => {
