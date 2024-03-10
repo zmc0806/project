@@ -1,3 +1,4 @@
+
 <script>
   let url_gdp = "https://zmc0806.github.io/project/gdp"; 
   let url_gini = "https://zmc0806.github.io/project/gini"; 
@@ -11,6 +12,7 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
     <head>
         <style>
           .bar {
@@ -50,6 +52,12 @@
     <!-- Dropdown for selecting a year -->
     <label for="yearSelector" style="font-size: 20px;">Which year are you interested in?</label>
     <select id="yearSelector" style="font-size: 15px;" ></select>
+
+    <select id="viewSelector" style="font-size: 15px; margin-top: 20px;">
+    <option value="top">Best 15 Countries</option>
+    <option value="bottom">Worst 15 Contries</option>
+    </select>
+
     <div id="lineGraphContainer"></div>
     <div id="visualizationContainer" style="display: flex; justify-content: space-between; align-items: start;">
         <div id="globeContainer" style="flex-grow: 1;">
@@ -71,8 +79,8 @@
         // Place this at the top of your D3.js script, after setting up the main SVG
 // Define axes here as well
 const giniColorScale = d3.scaleLinear()
-    .domain([0.2, 0.7]) // Assuming Gini values range from 0.2 to 0.7
-    .range(["green", "red"]);
+    .domain([0.3, 0.4, 0.6]) // Assuming Gini values range from 0.2 to 0.7
+    .range(["green", "yellow", "red"]); // Green to Yellow to Red
 
         const width = 1200;
         const height = 700;
@@ -107,6 +115,96 @@ const giniColorScale = d3.scaleLinear()
             gdpPerCapita: gdpPerCapita
         };
     }
+    // After your globe and other visual elements are set up
+
+// Define legend dimensions and position
+const legendWidth = 20;
+const legendHeight = 200;
+const legendPosition = { x: 50, y: 150 }; // Adjust as necessary
+
+// Create a canvas for the legend
+const legendSvg = svg.append("g")
+    .attr("class", "legend")
+    .attr("transform", `translate(${legendPosition.x},${legendPosition.y})`);
+
+// Create a linear gradient for the legend
+const gradientId = "gini-gradient";
+const defs = legendSvg.append("defs");
+const linearGradient = defs.append("linearGradient")
+    .attr("id", gradientId)
+    .attr("x1", "0%")
+    .attr("x2", "0%")
+    .attr("y1", "100%")
+    .attr("y2", "0%");
+linearGradient.selectAll("stop")
+    .data(giniColorScale.range().map(function(color, i, arr) {
+        const offset = i / (arr.length - 1) * 100;
+        return { offset: offset + "%", color: color };
+    }))
+    .enter().append("stop")
+    .attr("offset", function(d) { return d.offset; })
+    .attr("stop-color", function(d) { return d.color; });
+
+    // Assuming the setup of your SVG and projection
+
+// Example Gini coefficient ranges for discrete legend segments
+const giniRanges = [0.3, 0.4, 0.6,0.8]; // Corrected ranges to match your color scale
+const giniColors = ["green", "orange", "red","purple"]; // Directly using color names as per your scale
+// After setting up the legend segments
+
+// Define the text for each label based on the giniRanges
+const giniLabels = ["<= 0.3", "0.3 - 0.6", "0.6 - 0.7", ">= 0.7"];
+
+// Append labels to the legend
+legendSvg.selectAll("text")
+    .data(giniLabels)
+    .enter()
+    .append("text")
+    .attr("x", legendWidth + 5) // Position the labels right of the legend rectangles
+    .attr("y", (d, i) => i * (legendHeight / giniRanges.length) + (legendHeight / giniRanges.length / 2))
+    .text(d => d)
+    .attr("alignment-baseline", "middle") // Vertically align text in the center of each segment
+    .style("font-size", "12px"); // Adjust font size as necessary
+
+// Function to update the globe based on the selected Gini range
+function updateGlobeForGiniRange(minGini, maxGini) {
+    svg.selectAll(".segment")
+        .style("opacity", d => {
+            const giniValue = countryCasesMap[d.properties.name];
+            return (giniValue >= minGini && giniValue < maxGini) ? 1 : 0.2;
+        });
+}
+
+// Reset to show all countries
+function resetGlobe() {
+    svg.selectAll(".segment").style("opacity", 1);
+}
+
+// Draw the legend and attach click events
+legendSvg.selectAll("rect")
+    .data(giniRanges)
+    .enter()
+    .append("rect")
+    .attr("x", 0)
+    .attr("y", (d, i) => i * (legendHeight / giniRanges.length))
+    .attr("width", legendWidth)
+    .attr("height", legendHeight / giniRanges.length)
+    .attr("fill", (d, i) => giniColors[i])
+    .on("click", (d, i) => {
+        const minGini = d;
+        const maxGini = giniRanges[i + 1] || 1; // Ensure the last range goes up to 1 or maximum
+        updateGlobeForGiniRange(minGini, maxGini);
+    });
+
+// Optionally, add a reset button or area to the legend
+legendSvg.append("text")
+    .attr("x", 0)
+    .attr("y", legendHeight + 20) // Below the legend
+    .text("Reset")
+    .style("cursor", "pointer")
+    .on("click", resetGlobe);
+
+
     // Example function to add a highlighted point on the line graph for the selected year
     function updateGraphWithHighlightedYear(countryName, selectedYear) {
     const lineGraphData = generateLineGraphData(countryName);
@@ -291,6 +389,7 @@ svgContainer.append("text")
                     const countryName = d.properties.name;
                     const giniValue = countryCasesMap[countryName];
                     d3.select(this).style("fill", giniValue ? giniColorScale(giniValue) : "#FFD700"); // Use Gini color scale or default highlight color
+                    d3.select(this).style("fill", "#FFD700"); 
                     createLineGraph(countryName);
                 })
                 
@@ -387,12 +486,19 @@ svgContainer.append("text")
 
         // Function to update the bar chart
        // Assuming that your sortedData is correctly sorted and contains the data for the selected year
-function updateBarChart(selectedYear) {
+function updateBarChart(selectedYear,view) {
     // Filter and sort data
-    const sortedData = csvData.filter(d => d.Year == selectedYear)
-        .sort((a, b) => a["Gini coefficient"] - b["Gini coefficient"])
-        .slice(0, 15); // Take bottom 15
 
+    let sortedData;
+    if (view === "bottom") {
+        sortedData = csvData.filter(d => d.Year == selectedYear)
+            .sort((a, b) => b["Gini coefficient"] - a["Gini coefficient"]) // 降序排列
+            .slice(0, 15); // 取前15个
+    } else { // "bottom"
+        sortedData = csvData.filter(d => d.Year == selectedYear)
+            .sort((a, b) => a["Gini coefficient"] - b["Gini coefficient"]) // 升序排列
+            .slice(0, 15); // 取前15个
+    }
 
         const maxBarHeight = barChartHeight / sortedData.length;
 
@@ -481,14 +587,25 @@ if (totalHeightRequired > barChartHeight) {
         .text(d => d["Gini coefficient"]);
 }
 
+
+        d3.select("#viewSelector").on("change", function() {
+            const selectedYear = document.getElementById("yearSelector").value;
+            const view = this.value;
+            updateBarChart(selectedYear, view);
+        });
+
         // Call updateBarChart when the year is selected
         d3.select("#yearSelector").on("change", function() {
+            const selectedYear = this.value;
+            const view = document.getElementById("viewSelector").value;
             updateMapForYear(this.value);
-            updateBarChart(this.value);
+            updateBarChart(selectedYear, view);;
         });
 
         // Initialize the bar chart with the first available year
-        updateBarChart(years[0]);
+        const initialView = document.getElementById("viewSelector").value;
+        updateBarChart(years[0], initialView);
+       
         
         
     </script>
