@@ -1,4 +1,3 @@
-
 <script>
   let url_gdp = "https://zmc0806.github.io/project/gdp"; 
   let url_gini = "https://zmc0806.github.io/project/gini"; 
@@ -54,8 +53,8 @@
     <select id="yearSelector" style="font-size: 15px;" ></select>
 
     <select id="viewSelector" style="font-size: 15px; margin-top: 20px;">
-    <option value="top">Best 15 Countries</option>
-    <option value="bottom">Worst 15 Contries</option>
+    <option value="top">15 countries with the LOWEST wealth gap</option>
+    <option value="bottom">15 countries with the HIGHEST wealth gap</option>
     </select>
 
     <div id="lineGraphContainer"></div>
@@ -440,23 +439,23 @@ svgContainer.append("text")
                 .style("stroke-opacity", 0.5);
         }
 
-        let rotationTimer; // 定义一个变量来跟踪旋转计时器
+        let rotationTimer;
 
         function enableRotation() {
             if (rotationTimer) {
                 rotationTimer.stop();
             }
 
-            let lastTime = Date.now(); // 初始化上一次旋转的时间
+            let lastTime = Date.now();
 
             rotationTimer = d3.timer(function() {
                 if (!isDragging) {
-                    const now = Date.now(); // 获取当前时间
-                    const delta = now - lastTime; // 计算时间差
-                    lastTime = now; // 更新上一次旋转的时间
+                    const now = Date.now();
+                    const delta = now - lastTime;
+                    lastTime = now;
 
                     const rotate = projection.rotate();
-                    const rotationSpeed = 0.005; // 控制旋转速度，可根据需要调整
+                    const rotationSpeed = 0.005;
                     projection.rotate([rotate[0] + rotationSpeed * delta, rotate[1]]);
                     svg.selectAll("path").attr("d", path);
                 }
@@ -492,12 +491,12 @@ function updateBarChart(selectedYear,view) {
     let sortedData;
     if (view === "bottom") {
         sortedData = csvData.filter(d => d.Year == selectedYear)
-            .sort((a, b) => b["Gini coefficient"] - a["Gini coefficient"]) // 降序排列
-            .slice(0, 15); // 取前15个
+            .sort((a, b) => b["Gini coefficient"] - a["Gini coefficient"])
+            .slice(0, 15);
     } else { // "bottom"
         sortedData = csvData.filter(d => d.Year == selectedYear)
-            .sort((a, b) => a["Gini coefficient"] - b["Gini coefficient"]) // 升序排列
-            .slice(0, 15); // 取前15个
+            .sort((a, b) => a["Gini coefficient"] - b["Gini coefficient"]) 
+            .slice(0, 15);
     }
 
         const maxBarHeight = barChartHeight / sortedData.length;
