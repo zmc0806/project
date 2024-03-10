@@ -293,6 +293,7 @@ svgContainer.append("text")
                     d3.select(this).style("fill", giniValue ? giniColorScale(giniValue) : "#FFD700"); // Use Gini color scale or default highlight color
                     createLineGraph(countryName);
                 })
+                
                 .on("mouseout", function(d) {
                 const countryName = d.properties.name;
                 const giniValue = countryCasesMap[countryName];
