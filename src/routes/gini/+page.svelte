@@ -54,8 +54,8 @@
     <select id="yearSelector" style="font-size: 15px;" ></select>
 
     <select id="viewSelector" style="font-size: 15px; margin-top: 20px;">
-    <option value="top">Best 15 Countries</option>
-    <option value="bottom">Worst 15 Contries</option>
+    <option value="top">15 countries with the LOWEST wealth gap</option>
+    <option value="bottom">15 countries with the HIGHEST wealth gap</option>
     </select>
 
     <div id="lineGraphContainer"></div>
