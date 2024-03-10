@@ -9,45 +9,70 @@
   }
 
 
+
+
+
+
+
+
+
+
+
+
+
+  const projectTitle = 'DSC106 Final Project';
+  const description = 'This project explores the trends and patterns of GDP (Gross Domestic Product) across different countries and regions. GDP is a crucial economic indicator that measures the total value of goods and services produced within a country during a specific period. By analyzing GDP data, we aim to gain insights into economic growth, development, and potential factors that influence a nation\'s economic performance.';
+  const authors = 'Mianchen Zhang and Yulin Chen';
 </script>
-
-
 
 <button on:click={() => navigateAndRefresh(`${base}/home`)}>HOME</button>
 <button on:click={() => navigateAndRefresh(`${base}/gdp`)}>GDP</button>
 <button on:click={() => navigateAndRefresh(`${base}/gini`)}>GINI</button>
 
-
-
+<main>
+  <div class="cover">
+    <div class="content">
+      <h1>{projectTitle}</h1>
+      <p>{description}</p>
+      <div class="authors">
+        <span>{authors}</span>
+      </div>
+    </div>
+  </div>
+</main>
 
 <style>
-  /* Background image styling */
-  .background {
-    background-image: url('image/back.webp'); /* Replace with the actual image path */
-    background-size: cover;
+  .cover {
     height: 100vh;
+    background-image: url('https://www.investopedia.com/thmb/IN8QesXlnqmtg6RgQC9USnh9Bm8=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/GettyImages-636251500-53ea44b08ca04fb7bc4f0c633cd3ea5d.jpg');
+    background-size: cover;
+    background-position: center;
     display: flex;
     justify-content: center;
     align-items: center;
-    color: white;
-    text-shadow: 2px 2px 4px #000;
   }
 
-  /* Content area styling */
   .content {
-    text-align: center;
-    background-color: rgba(0, 0, 0, 0.5);
-    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 2rem;
     border-radius: 8px;
+    text-align: center;
+    max-width: 800px;
+  }
+
+  h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+
+  p {
+    font-size: 1.2rem;
+    line-height: 1.5;
+    margin-bottom: 2rem;
+  }
+
+  .authors {
+    font-size: 1.2rem;
+    text-align: right;
   }
 </style>
-
-<div class="background">
-  <div class="content">
-    <h1>Economic Concepts: GDP and the Gini Coefficient</h1>
-    <p>GDP (Gross Domestic Product) measures the market value of all final goods and services produced within a country in a given period.</p>
-    <p>The Gini coefficient is a measure of the inequality of a distribution, a value of 0 expressing total equality and a value of 1 expressing maximal inequality.</p>
-    <h2>Their Differences</h2>
-    <p>While GDP focuses on the total volume of economic activity, the Gini coefficient focuses on how equally wealth is distributed.</p>
-  </div>
-</div>
