@@ -56,7 +56,6 @@
     <option value="top">15 countries with the LOWEST wealth gap</option>
     <option value="bottom">15 countries with the HIGHEST wealth gap</option>
     </select>
-
     <div id="lineGraphContainer"></div>
     <div id="visualizationContainer" style="display: flex; justify-content: space-between; align-items: start;">
         <div id="globeContainer" style="flex-grow: 1;">
