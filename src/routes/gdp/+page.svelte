@@ -260,8 +260,8 @@ svgContainer.append("text")
 
             // Initialize the map with the first available year
             updateMapForYear(years[0]);
-            const initialYear = years[0]; // or any specific year you want to display initially
-    yearSelector.property('value', initialYear); // Set the selector to this initial year
+            const initialYear = years[0]; 
+            yearSelector.property('value', initialYear);
 
     // Now call the function to update the bar chart with this initial year
     updateBarChart(initialYear); 
@@ -618,7 +618,7 @@ if (totalHeightRequired > barChartHeight) {
 
         // Call updateBarChart when the year is selected
         d3.select("#yearSelector").on("change", function() {
-            updateMapForYear(this.value);
+            updateMapForYuear(this.value);
             updateBarChart(this.value);
         });
 

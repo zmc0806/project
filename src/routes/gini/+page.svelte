@@ -1,4 +1,34 @@
 <script>
+    import { marked } from 'marked';
+
+let markdownText = `# Visualization Project
+
+This project visualizes the GDP and GINI coefficients over different years. Explore the data using the links above.`;
+
+let htmlContent = marked.parse(markdownText);
+
+
+let markdownTextBottom = `# Discoaver More
+
+Thank you for exploring the GDP and GINI visualizations. Stay curious and keep exploring data!
+
+
+
+
+
+
+
+;dd`;
+
+let htmlContentBottom = marked.parse(markdownTextBottom);
+let markdownTextMiddle = `# What is GDP Tells us?
+
+balabalbalabla
+`
+;
+
+let htmlContentMiddle= marked.parse(markdownTextMiddle);
+
   let url_gdp = "https://zmc0806.github.io/project/gdp"; 
   let url_gini = "https://zmc0806.github.io/project/gini"; 
   let url_home = "https://zmc0806.github.io/project/home";
@@ -51,11 +81,6 @@
     <!-- Dropdown for selecting a year -->
     <label for="yearSelector" style="font-size: 20px;">Which year are you interested in?</label>
     <select id="yearSelector" style="font-size: 15px;" ></select>
-
-    <select id="viewSelector" style="font-size: 15px; margin-top: 20px;">
-    <option value="top">15 countries with the LOWEST wealth gap</option>
-    <option value="bottom">15 countries with the HIGHEST wealth gap</option>
-    </select>
     <div id="lineGraphContainer"></div>
     <div id="visualizationContainer" style="display: flex; justify-content: space-between; align-items: start;">
         <div id="globeContainer" style="flex-grow: 1;">
@@ -64,10 +89,15 @@
         <div id="lineGraphContainer" style="width: 300px; height: 200px;">
             <!-- Line graph will be rendered here by Plotly -->
         </div>
-    </div>
-    
+    </div>  
     <svg>
-
+        <div>{@html htmlContentMiddle}</div>
+        <select id="viewSelector" style="font-size: 15px; margin-top: 20px;">
+            <option value="top">Countries with the LOWEST wealth gap</option>
+            <option value="bottom">Countries with the HIGHEST wealth gap</option>
+            </select>
+        <div id="barChartContainer"></div> <!-- Container for the bar chart -->
+        <div>{@html htmlContentBottom}</div>
     </svg>
     <!-- D3.js and TopoJSON for map rendering -->
     <script src="https://d3js.org/d3.v4.min.js"></script>
@@ -286,19 +316,19 @@ svgContainer.append("text")
   .style("font-weight", "bold") // Optional: makes the text bold
   .text("Gini Per Capita Over Time 1963 - 2022"); // Replace with your actual title
             
-    const barSvg = d3.select('body').append('svg')
+  const barSvg = d3.select('#barChartContainer')
+    .append('svg')
     .attr('width', barChartWidth + margin.left + margin.right)
     .attr('height', barChartHeight + margin.top + margin.bottom)
     .append('g')
     .attr('transform', `translate(${margin.left},${margin.top})`);
 
-
-        // Load CSV data
-        d3.csv("economic-inequality-gini-index-filled-2000-2022.csv", function(error, data) {
+    d3.csv("economic-inequality-gini-index-filled-2000-2022.csv", function(error, data) {
             if (error) throw error;
             csvData = data; // Store the CSV data globally
 
             // Populate the year selector with unique years from the data
+            
             const years = Array.from(new Set(data.map(d => d.Year))).sort();
             const yearSelector = d3.select("#yearSelector");
             years.forEach(year => {
@@ -307,8 +337,12 @@ svgContainer.append("text")
 
             // Initialize the map with the first available year
             updateMapForYear(years[0]);
-        });
+            const initialYear = years[0]; 
+            yearSelector.property('value', initialYear);
 
+    // Now call the function to update the bar chart with this initial year
+    updateBarChart(initialYear); 
+        });
         // Update map based on selected year
         // Update map based on selected year
         function updateMapForYear(selectedYear) {
@@ -484,6 +518,8 @@ svgContainer.append("text")
 
         // Function to update the bar chart
        // Assuming that your sortedData is correctly sorted and contains the data for the selected year
+
+
 function updateBarChart(selectedYear,view) {
     // Filter and sort data
 
