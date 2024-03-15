@@ -58,7 +58,10 @@ let htmlContentMiddle= marked.parse(markdownTextMiddle);
             stroke: #000;
             shape-rendering: crispEdges;
         }
-        
+        .info-box {
+  /* Other styles... */
+  font-size: 1.5em; /* Bigger text size */
+}
         .axis text {
             font-family: sans-serif;
             font-size: 11px;
@@ -81,7 +84,6 @@ let htmlContentMiddle= marked.parse(markdownTextMiddle);
     <!-- Dropdown for selecting a year -->
     <label for="yearSelector" style="font-size: 20px;">Which year are you interested in?</label>
     <select id="yearSelector" style="font-size: 15px;" ></select>
-    <div id="scatterPlotContainer" style="width: 960px; height: 500px;"></div>
     <div id="lineGraphContainer"></div>
     <div id="visualizationContainer" style="display: flex; justify-content: space-between; align-items: start;">
         <div id="globeContainer" style="flex-grow: 1;">
@@ -99,6 +101,7 @@ let htmlContentMiddle= marked.parse(markdownTextMiddle);
             </select>
         <div id="barChartContainer"></div> <!-- Container for the bar chart -->
         <div>{@html htmlContentBottom}</div>
+        <div id="scatterPlotContainer" style="width: 960px; height: 500px;"></div>
     </svg>
     <!-- D3.js and TopoJSON for map rendering -->
     <script src="https://d3js.org/d3.v4.min.js"></script>
@@ -521,9 +524,9 @@ svgContainer.append("text")
 
 // Function to create the scatter plot
 function createScatterPlot(data) {
-  const margin = { top: 20, right: 20, bottom: 30, left: 50 },
+  const margin = { top: 50, right: 20, bottom: 50, left: 70 },
         width = 960 - margin.left - margin.right,
-        height = 500 - margin.top - margin.bottom;
+        height = 600 - margin.top - margin.bottom;
 
   const svg = d3.select("#scatterPlotContainer").append("svg")
       .attr("width", width + margin.left + margin.right)
@@ -556,42 +559,53 @@ function createScatterPlot(data) {
       .attr("cx", function(d) { return x(d.gdp); })
       .attr("cy", function(d) { return y(d.gini); })
       .style("fill", "#69b3a2")
-      .on("mouseover", function(d) {
-        tooltip.transition()
-          .duration(200)
-          .style("opacity", .9);
-        tooltip.html(d.country + "<br/> Gini: " + d.gini 
-          + "<br/> GDP: $" + d.gdp)
-          .style("left", (d3.event.pageX + 5) + "px")
-          .style("top", (d3.event.pageY - 28) + "px");
-      })
-      .on("mouseout", function(d) {
-        tooltip.transition()
-          .duration(500)
-          .style("opacity", 0);
-      })
       .on("click", function(d) {
-        // Display the country information on click
-        infoBox.html("Country: " + d.country + "<br/>GDP: $" + d.gdp + "<br/>Gini: " + d.gini)
-               .style("opacity", 1)
-               .style("right", "10px")
-               .style("top", "10px")
-               .style("position", "absolute")
-               .style("background", "white")
-               .style("padding", "10px")
-               .style("border", "1px solid #ccc")
-               .style("border-radius", "5px")
-               .style("text-align", "left");
-      });
+  // Display the country information on click
+  infoBox.html("<strong>Country:</strong> " + d.country 
+               + "<br/><strong>GDP:</strong> $" + d.gdp 
+               + "<br/><strong>Gini:</strong> " + d.gini)
+         .style("opacity", 1)
+         .style("right", "50px")
+         .style("top", "1800px")
+         .style("position", "absolute")
+         .style("background", "white")
+         .style("padding", "30px")
+         .style("border", "10px solid #ccc")
+         .style("border-radius", "5px")
+         .style("text-align", "left")
+         .style("font-size", "1.5em"); // Bigger text size
+});
+svg.append("g")
+  .attr("transform", `translate(0, ${height})`)
+  .call(d3.axisBottom(x))
+  .append("text")
+  .attr("class", "axis-label")
+  .attr("x", width / 2)
+  .attr("y", margin.bottom / 2 + 15) // Position adjusted to avoid being cut off.
+  .style("text-anchor", "middle")
+  .style("fill", "#000") // Text color
+  .text("GDP per Capita 2021 (PPP, constant 2017 international $)");
 
-  // Add the X Axis
-  svg.append("g")
-      .attr("transform", "translate(0," + height + ")")
-      .call(d3.axisBottom(x));
+// Add the Y Axis with a label
+svg.append("g")
+  .call(d3.axisLeft(y))
+  .append("text")
+  .attr("class", "axis-label")
+  .attr("transform", "rotate(-90)")
+  .attr("y", -margin.left / 2 - 10) // Adjust position to not be cut off.
+  .attr("x", -height / 2)
+  .style("text-anchor", "middle")
+  .style("fill", "#000") // Text color
+  .text("Gini Coefficient 2021");
 
-  // Add the Y Axis
-  svg.append("g")
-      .call(d3.axisLeft(y));
+ svg.append("text")
+      .attr("class", "title")
+      .attr("x", width / 2)
+      .attr("y", -margin.top / 2)
+      .attr("text-anchor", "middle")
+      .style("font-size", "24px")
+      .text("Income Inequality vs. GDP per Capita, 2021");
+
 }
 
 // Load the CSV data and then call the function
