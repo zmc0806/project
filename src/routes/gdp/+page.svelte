@@ -13,6 +13,9 @@
 <html lang="en">
     <head>
         <style>
+        body {
+        min-height: 4000px; /* Adjust this value to change the page length */
+      }
           .bar {
             fill: steelblue;
         }
@@ -42,15 +45,17 @@
     top: 110px; /* Adjust as needed */
     right: 250px; /* Adjust as needed */
     width: 300px; /* Maintain or adjust size as needed */
-    height: 5000px; /* Maintain or adjust size as needed */
+    height: 1000px; /* Maintain or adjust size as needed */
 }
         </style>
     </head>
 <body>
+    
     <!-- Dropdown for selecting a year -->
     <label for="yearSelector" style="font-size: 20px;">Which year are you interested in?</label>
     <select id="yearSelector" style="font-size: 15px;" ></select>
     <div id="lineGraphContainer"></div>
+    <div id="staticLineGraphContainer"></div>
     <div id="visualizationContainer" style="display: flex; justify-content: space-between; align-items: start;">
         <div id="globeContainer" style="flex-grow: 1;">
             <!-- Globe SVG and related elements here -->
@@ -60,6 +65,7 @@
         </div>
     </div>
     
+
     <svg>
 
     </svg>
@@ -478,7 +484,58 @@ if (totalHeightRequired > barChartHeight) {
         // Initialize the bar chart with the first available year
         updateBarChart(years[0]);
 
-        
+    
+    (function() {
+    // Define the dimensions and margins for the graph
+    var margin = {top: 100, right: 10, bottom: 3000, left: 60},
+        width = 960 - margin.left - margin.right,
+        height = 400 - margin.top - margin.bottom;
+
+    // Append the svg object to the body of the page
+    var svg = d3.select("#staticLineGraphContainer")
+      .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+      .append("g")
+        .attr("transform",
+              "translate(" + margin.left + "," + margin.top + ")");
+
+    // Sample data
+    var data = [
+        {country: "Australia", value: 60681.5},
+        {country: "Austria", value: 65402.3},
+        {country: "Austr3a", value: 65402.3},
+        // Add more countries as needed
+    ];
+
+    // Set the ranges
+    var x = d3.scalePoint().range([0, width]).padding(0.4),
+        y = d3.scaleLinear().range([height, 0]);
+
+    // Scale the range of the data
+    x.domain(data.map(function(d) { return d.country; }));
+    y.domain([0, d3.max(data, function(d) { return d.value; })]);
+
+    // Add the X Axis
+    svg.append("g")
+       .attr("transform", "translate(0," + height + ")")
+       .call(d3.axisBottom(x));
+
+    // Add the Y Axis
+    svg.append("g")
+       .call(d3.axisLeft(y));
+
+    // Add the valueline path.
+    svg.append("path")
+      .data([data])
+      .attr("fill", "none")
+      .attr("stroke", "steelblue")
+      .attr("stroke-width", 2)
+      .attr("d", d3.line()  
+          .x(function(d) { return x(d.country); })
+          .y(function(d) { return y(d.value); })
+      );
+})();
     </script>
 </body>
 </html>
