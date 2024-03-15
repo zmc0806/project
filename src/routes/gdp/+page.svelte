@@ -80,6 +80,7 @@ Thank you for exploring the GDP and GINI visualizations. Stay curious and keep e
     <!-- Dropdown for selecting a year -->
     <label for="yearSelector" style="font-size: 20px;">Which year are you interested in?</label>
     <select id="yearSelector" style="font-size: 15px;" ></select>
+    <div id="bar2" style="width: 960px; height: 500px;"></div>
     <div id="visualizationContainer" style="display: flex; justify-content: space-between; align-items: start;">
         <div id="lineGraphContainer" style="width: 300px; height: 200px;">
             <!-- Line graph will be rendered here by Plotly -->
@@ -89,7 +90,6 @@ Thank you for exploring the GDP and GINI visualizations. Stay curious and keep e
     <svg>
         <div>{@html htmlContentMiddle}</div>
         <div id="barChartContainer"></div> <!-- Container for the bar chart -->
-        <div id="bar2" style="width: 960px; height: 500px;"></div>
         <div>{@html htmlContentBottom}</div>
 
     </svg>
@@ -97,6 +97,7 @@ Thank you for exploring the GDP and GINI visualizations. Stay curious and keep e
     <script src="https://d3js.org/d3.v4.min.js"></script>
     <script src="https://d3js.org/topojson.v1.min.js"></script>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script> <!-- Plotly.js for line graph -->
+
     <script>
         // Place this at the top of your D3.js script, after setting up the main SVG
 // Define axes here as well
@@ -407,7 +408,74 @@ svgContainer.append("text")
 
             svg.call(drag);
         }
+        function createIncomeBarChartV4() {
+    const margin = { top: 40, right: 20, bottom: 70, left: 40 },
+          width = 960 - margin.left - margin.right,
+          height = 500 - margin.top - margin.bottom;
 
+    const svg = d3.select("#bar2").append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+      .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    // Add the title
+    svg.append("text")
+        .attr("x", (width / 2))             
+        .attr("y", 0 - (margin.top / 2))
+        .attr("text-anchor", "middle")  
+        .style("font-size", "16px") 
+        .style("text-decoration", "underline")  
+        .text("Top 15 Countries by Income");
+
+    // Load and process the data
+    d3.csv("income.csv", function(error, data) {
+        if (error) throw error;
+
+        // Convert strings to numbers and sort and slice the data
+        data.forEach(function(d) {
+            d.value = +d.value;
+        });
+
+        data.sort(function(a, b) {
+            return a.value - b.value;
+        }).slice(0, 15);
+
+        const x = d3.scaleBand()
+              .range([0, width])
+              .padding(0.1);
+        const y = d3.scaleLinear()
+              .range([height, 0]);
+
+        x.domain(data.map(function(d) { return d.country; }));
+        y.domain([0, d3.max(data, function(d) { return d.value; })]);
+
+        svg.selectAll(".bar")
+          .data(data)
+          .enter().append("rect")
+            .attr("class", "bar")
+            .attr("x", function(d) { return x(d.country); })
+            .attr("width", x.bandwidth())
+            .attr("y", function(d) { return y(d.value); })
+            .attr("height", function(d) { return height - y(d.value); });
+
+        svg.append("g")
+            .attr("transform", "translate(0," + height + ")")
+            .call(d3.axisBottom(x))
+            .selectAll("text")
+              .style("text-anchor", "end")
+              .attr("dx", "-.8em")
+              .attr("dy", ".15em")
+              .attr("transform", "rotate(-65)");
+
+        svg.append("g")
+            .call(d3.axisLeft(y));
+    });
+}
+
+
+// Call the function to draw the second bar chart
+createIncomeBarChartV4();
         // Function to update the bar chart
        // Assuming that your sortedData is correctly sorted and contains the data for the selected year
 function updateBarChart(selectedYear) {
@@ -512,6 +580,7 @@ if (totalHeightRequired > barChartHeight) {
         // Initialize the bar chart with the first available year
         updateBarChart(years[0]);
 
+// Assuming d3 and the necessary data are correctly imported and available
     </script>
 
 
