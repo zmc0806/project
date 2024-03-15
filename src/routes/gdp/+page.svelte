@@ -8,9 +8,17 @@ This project visualizes the GDP and GINI coefficients over different years. Expl
   let htmlContent = marked.parse(markdownText);
 
 
-  let markdownTextBottom = `# Discover More
+  let markdownTextBottom = `# Discoaver More
 
-Thank you for exploring the GDP and GINI visualizations. Stay curious and keep exploring data!`;
+Thank you for exploring the GDP and GINI visualizations. Stay curious and keep exploring data!
+
+
+
+
+
+
+
+;dd`;
 
   let htmlContentBottom = marked.parse(markdownTextBottom);
   let markdownTextMiddle = `# What is GDP Tells us?
@@ -45,11 +53,16 @@ Thank you for exploring the GDP and GINI visualizations. Stay curious and keep e
           .bar {
             fill: steelblue;
         }
+        .bar2{
+            fill: green;
+        }
         
         .bar:hover {
             fill: orange;
         }
-        
+        .x-axis-label {
+    font-size: 14px; /* Adjust font size as needed */
+}
         .axis path,
         .axis line {
             fill: none;
@@ -80,7 +93,6 @@ Thank you for exploring the GDP and GINI visualizations. Stay curious and keep e
     <!-- Dropdown for selecting a year -->
     <label for="yearSelector" style="font-size: 20px;">Which year are you interested in?</label>
     <select id="yearSelector" style="font-size: 15px;" ></select>
-    <div id="bar2" style="width: 960px; height: 500px;"></div>
     <div id="visualizationContainer" style="display: flex; justify-content: space-between; align-items: start;">
         <div id="lineGraphContainer" style="width: 300px; height: 200px;">
             <!-- Line graph will be rendered here by Plotly -->
@@ -91,6 +103,7 @@ Thank you for exploring the GDP and GINI visualizations. Stay curious and keep e
         <div>{@html htmlContentMiddle}</div>
         <div id="barChartContainer"></div> <!-- Container for the bar chart -->
         <div>{@html htmlContentBottom}</div>
+        <div id="bar2" style="width: 960px; height: 500px;"></div>
 
     </svg>
     <!-- D3.js and TopoJSON for map rendering -->
@@ -409,69 +422,101 @@ svgContainer.append("text")
             svg.call(drag);
         }
         function createIncomeBarChartV4() {
-    const margin = { top: 40, right: 20, bottom: 70, left: 40 },
-          width = 960 - margin.left - margin.right,
-          height = 500 - margin.top - margin.bottom;
+    const margin = { top: 40, right: 50, bottom: 120, left: 110 },
+        width = 960 - margin.left - margin.right,
+        height = 600 - margin.top - margin.bottom;
 
     const svg = d3.select("#bar2").append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
-      .append("g")
+        .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     // Add the title
     svg.append("text")
-        .attr("x", (width / 2))             
+        .attr("x", (width / 2))
         .attr("y", 0 - (margin.top / 2))
-        .attr("text-anchor", "middle")  
-        .style("font-size", "16px") 
-        .style("text-decoration", "underline")  
-        .text("Top 15 Countries by Income");
+        .attr("text-anchor", "middle")
+        .style("font-size", "20px")
+        .style("text-decoration", "underline")
+        .text("Top 15 Countries by Income(thousand)");
 
     // Load and process the data
-    d3.csv("income.csv", function(error, data) {
+    d3.csv("income.csv", function (error, data) {
         if (error) throw error;
 
         // Convert strings to numbers and sort and slice the data
-        data.forEach(function(d) {
+        data.forEach(function (d) {
             d.value = +d.value;
         });
 
-        data.sort(function(a, b) {
+        data.sort(function (a, b) {
             return a.value - b.value;
         }).slice(0, 15);
 
         const x = d3.scaleBand()
-              .range([0, width])
-              .padding(0.1);
+            .range([0, width])
+            .padding(0.1);
         const y = d3.scaleLinear()
-              .range([height, 0]);
+            .range([height, 0]);
 
-        x.domain(data.map(function(d) { return d.country; }));
-        y.domain([0, d3.max(data, function(d) { return d.value; })]);
+        x.domain(data.map(function (d) { return d.country; }));
+        y.domain([0, d3.max(data, function (d) { return d.value; })]);
 
+        // Add tooltip
+        const tooltip = d3.select("#bar2").append("div")
+            .style("opacity", 0)
+            .attr("class", "tooltip")
+            .style("position", "absolute")
+            .style("background-color", "white")
+            .style("border", "solid")
+            .style("border-width", "1px")
+            .style("border-radius", "5px")
+            .style("padding", "10px");
+
+        // Add bars
         svg.selectAll(".bar")
-          .data(data)
-          .enter().append("rect")
-            .attr("class", "bar")
-            .attr("x", function(d) { return x(d.country); })
+            .data(data)
+            .enter().append("rect")
+            .attr("class", function (d) { return "bar " + (d.country === "United States" || d.country === "Ireland" ? "bar2" : ""); })
+            .attr("x", function (d) { return x(d.country); })
             .attr("width", x.bandwidth())
-            .attr("y", function(d) { return y(d.value); })
-            .attr("height", function(d) { return height - y(d.value); });
+            .attr("y", function (d) { return y(d.value); })
+            .attr("height", function (d) { return height - y(d.value); })
+            .on("mouseover", function (d) {
+                tooltip.transition()
+                    .duration(200)
+                    .style("opacity", .9);
+                tooltip.html("Value: " + d.value)
+                    .style("left", (d3.event.pageX) + "px")
+                    .style("top", (d3.event.pageY + 200 - height + y(d.value)) + "px");
+            })
+            .on("mouseout", function (d) {
+                tooltip.transition()
+                    .duration(500)
+                    .style("opacity", 0);
+            });
 
-        svg.append("g")
-            .attr("transform", "translate(0," + height + ")")
-            .call(d3.axisBottom(x))
-            .selectAll("text")
-              .style("text-anchor", "end")
-              .attr("dx", "-.8em")
-              .attr("dy", ".15em")
-              .attr("transform", "rotate(-65)");
+        // Add X axis
+      // Add X axis
+svg.append("g")
+    .attr("class", "x-axis")
+    .attr("transform", "translate(0," + height + ")")
+    .call(d3.axisBottom(x))
+    .selectAll("text")
+    .attr("class", "x-axis-label") // Add class here
+    .style("text-anchor", "end")
+    .attr("dx", "-.8em")
+    .attr("dy", ".15em")
+    .attr("transform", "rotate(-65)");
 
+
+        // Add Y axis
         svg.append("g")
             .call(d3.axisLeft(y));
     });
 }
+
 
 
 // Call the function to draw the second bar chart
