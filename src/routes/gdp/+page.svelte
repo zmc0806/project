@@ -103,6 +103,7 @@
 
         body {
         min-height: 2500px; /* Adjust this value to change the page length */
+        background-color: #F5F5DC;
       }
       #bar2 {
   min-height: 600px; /* or whatever height you desire */
@@ -532,7 +533,7 @@ svgContainer.append("text")
             .style("opacity", 0)
             .attr("class", "tooltip")
             .style("position", "absolute")
-            .style("background-color", "beige")
+            .style("background-color", "white")
             .style("border", "solid")
             .style("border-width", "1px")
             .style("border-radius", "5px")
