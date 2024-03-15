@@ -24,7 +24,7 @@ let markdownTextBottom3 = `# Takeways
 let htmlContentBottom3 = marked.parse(markdownTextBottom3);
 let htmlContentBottom = marked.parse(markdownTextBottom);
 let markdownTextMiddle = `# Rank!
-### As the years change, so do the rankings—watch as countries climb or descend in the quest for economic balance. Lets focus back on 2021. Countries like Slovakia and Slovenia lead with the narrowest wealth gaps, exemplifying greater equality. 
+### As the years change, so do the rankings—watch as countries climb or descend in the quest for economic balance. Lets focus back on 2021. Countries like Slovenia and Ukraine lead with the narrowest wealth gaps, exemplifying greater equality. 
 
 ### Toggle between the lowest and highest wealth gaps to reveal the full spectrum of income distribution across the globe. By switching the view, you can instantly identify countries grappling with the most significant disparities, where wealth is less evenly distributed among their populace. 
 `
