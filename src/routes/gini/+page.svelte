@@ -45,6 +45,9 @@ let htmlContentMiddle2= marked.parse(markdownTextMiddle2);
 
     <head>
         <style>
+        body {
+        background-color: #F5F5DC;
+        }
             
           .bar {
             fill: steelblue;
