@@ -14,8 +14,7 @@ const authors = 'Mianchen Zhang and Yulin Chen';
 </script>
 
 <button on:click={() => navigateAndRefresh(`${base}/home`)}>HOME</button>
-<button on:click={() => navigateAndRefresh(`${base}/gdp`)}>GDP</button>
-<button on:click={() => navigateAndRefresh(`${base}/gini`)}>GINI</button>
+<button on:click={() => navigateAndRefresh(`${base}/gdp`)}> Lets Explore the GDP world!</button>
 
 <main>
   <div class="cover">
@@ -68,3 +67,4 @@ const authors = 'Mianchen Zhang and Yulin Chen';
     text-align: right;
   }
 </style>
+
