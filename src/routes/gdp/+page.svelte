@@ -39,6 +39,9 @@ Thank you for exploring the GDP and GINI visualizations. Stay curious and keep e
         body {
         min-height: 4000px; /* Adjust this value to change the page length */
       }
+      #bar2 {
+  min-height: 500px; /* or whatever height you desire */
+}
           .bar {
             fill: steelblue;
         }
@@ -86,7 +89,9 @@ Thank you for exploring the GDP and GINI visualizations. Stay curious and keep e
     <svg>
         <div>{@html htmlContentMiddle}</div>
         <div id="barChartContainer"></div> <!-- Container for the bar chart -->
+        <div id="bar2" style="width: 960px; height: 500px;"></div>
         <div>{@html htmlContentBottom}</div>
+
     </svg>
     <!-- D3.js and TopoJSON for map rendering -->
     <script src="https://d3js.org/d3.v4.min.js"></script>
@@ -507,8 +512,6 @@ if (totalHeightRequired > barChartHeight) {
         // Initialize the bar chart with the first available year
         updateBarChart(years[0]);
 
-    
-    
     </script>
 
 
