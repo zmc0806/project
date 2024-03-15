@@ -81,6 +81,7 @@ let htmlContentMiddle= marked.parse(markdownTextMiddle);
     <!-- Dropdown for selecting a year -->
     <label for="yearSelector" style="font-size: 20px;">Which year are you interested in?</label>
     <select id="yearSelector" style="font-size: 15px;" ></select>
+    <div id="scatterPlotContainer" style="width: 960px; height: 500px;"></div>
     <div id="lineGraphContainer"></div>
     <div id="visualizationContainer" style="display: flex; justify-content: space-between; align-items: start;">
         <div id="globeContainer" style="flex-grow: 1;">
@@ -274,7 +275,6 @@ legendSvg.append("text")
 
     Plotly.newPlot('lineGraphContainer', [trace1, trace2], layout);
 }
-
 
     // Function to create a line graph for a given country using Plotly.js
     function createLineGraph(countryName) {
@@ -519,6 +519,95 @@ svgContainer.append("text")
         // Function to update the bar chart
        // Assuming that your sortedData is correctly sorted and contains the data for the selected year
 
+// Function to create the scatter plot
+function createScatterPlot(data) {
+  const margin = { top: 20, right: 20, bottom: 30, left: 50 },
+        width = 960 - margin.left - margin.right,
+        height = 500 - margin.top - margin.bottom;
+
+  const svg = d3.select("#scatterPlotContainer").append("svg")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+  const x = d3.scaleLinear().range([0, width]);
+  const y = d3.scaleLinear().range([height, 0]);
+
+  x.domain([0, d3.max(data, function(d) { return d.gdp; })]);
+  y.domain([0.2, d3.max(data, function(d) { return d.gini; })]); // Start Y scale from 0.2
+
+  // Tooltip for hover information
+  var tooltip = d3.select("body").append("div")
+      .attr("class", "tooltip")
+      .style("opacity", 0);
+
+  // Info box for clicked country
+  var infoBox = d3.select("body").append("div")
+      .attr("class", "info-box")
+      .style("opacity", 0);
+
+  // Create circles for the scatter plot
+  svg.selectAll(".dot")
+      .data(data)
+    .enter().append("circle")
+      .attr("class", "dot")
+      .attr("r", 10) // Increased radius
+      .attr("cx", function(d) { return x(d.gdp); })
+      .attr("cy", function(d) { return y(d.gini); })
+      .style("fill", "#69b3a2")
+      .on("mouseover", function(d) {
+        tooltip.transition()
+          .duration(200)
+          .style("opacity", .9);
+        tooltip.html(d.country + "<br/> Gini: " + d.gini 
+          + "<br/> GDP: $" + d.gdp)
+          .style("left", (d3.event.pageX + 5) + "px")
+          .style("top", (d3.event.pageY - 28) + "px");
+      })
+      .on("mouseout", function(d) {
+        tooltip.transition()
+          .duration(500)
+          .style("opacity", 0);
+      })
+      .on("click", function(d) {
+        // Display the country information on click
+        infoBox.html("Country: " + d.country + "<br/>GDP: $" + d.gdp + "<br/>Gini: " + d.gini)
+               .style("opacity", 1)
+               .style("right", "10px")
+               .style("top", "10px")
+               .style("position", "absolute")
+               .style("background", "white")
+               .style("padding", "10px")
+               .style("border", "1px solid #ccc")
+               .style("border-radius", "5px")
+               .style("text-align", "left");
+      });
+
+  // Add the X Axis
+  svg.append("g")
+      .attr("transform", "translate(0," + height + ")")
+      .call(d3.axisBottom(x));
+
+  // Add the Y Axis
+  svg.append("g")
+      .call(d3.axisLeft(y));
+}
+
+// Load the CSV data and then call the function
+d3.csv("merged_gini_gdp_2021.csv", function(error, data) {
+  if (error) throw error;
+
+  // Parse the data
+  data.forEach(function(d) {
+    d.gdp = +d["GDP per Capita 2021 (PPP, constant 2017 international $)"];
+    d.gini = +d["Gini Coefficient 2021"];
+    d.country = d.Entity; // Assuming 'Entity' column has the country names
+  });
+
+  createScatterPlot(data);
+});
+
 
 function updateBarChart(selectedYear,view) {
     // Filter and sort data
@@ -640,7 +729,6 @@ if (totalHeightRequired > barChartHeight) {
         const initialView = document.getElementById("viewSelector").value;
         updateBarChart(years[0], initialView);
        
-        
         
     </script>
 </body>
