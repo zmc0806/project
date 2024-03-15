@@ -84,8 +84,8 @@ Thank you for exploring the GDP and GINI visualizations. Stay curious and keep e
     </div>
     <div>{@html htmlContent}</div>
     <svg>
-        <div id="barChartContainer"></div> <!-- Container for the bar chart -->
         <div>{@html htmlContentMiddle}</div>
+        <div id="barChartContainer"></div> <!-- Container for the bar chart -->
         <div>{@html htmlContentBottom}</div>
     </svg>
     <!-- D3.js and TopoJSON for map rendering -->
