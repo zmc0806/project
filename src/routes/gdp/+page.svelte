@@ -1,4 +1,19 @@
 <script>
+  import { marked } from 'marked';
+
+  let markdownText = `# Visualization Project
+
+This project visualizes the GDP and GINI coefficients over different years. Explore the data using the links above.`;
+
+  let htmlContent = marked.parse(markdownText);
+
+
+  let markdownTextBottom = `# Discover More
+
+Thank you for exploring the GDP and GINI visualizations. Stay curious and keep exploring data!`;
+
+  let htmlContentBottom = marked.parse(markdownTextBottom);
+
   let url_gdp = "https://zmc0806.github.io/project/gdp"; 
   let url_gini = "https://zmc0806.github.io/project/gini"; 
   let url_home = "https://zmc0806.github.io/project/home";
@@ -16,20 +31,14 @@
         body {
         min-height: 4000px; /* Adjust this value to change the page length */
       }
-        .bar {
+          .bar {
             fill: steelblue;
         }
         
         .bar:hover {
             fill: orange;
         }
-        .income-bar {
-            fill: #4CAF50; /* Green bars for income data */
-        }
-
-        .income-bar:hover {
-            fill: #d35400; /* Orange on hover */
-        }
+        
         .axis path,
         .axis line {
             fill: none;
@@ -70,7 +79,7 @@
             <!-- Line graph will be rendered here by Plotly -->
         </div>
     </div>
-    <div id="staticBarChart"></div>
+    <div>{@html htmlContent}</div>
 
     <svg>
 
@@ -490,8 +499,60 @@ if (totalHeightRequired > barChartHeight) {
         // Initialize the bar chart with the first available year
         updateBarChart(years[0]);
 
-        
-   
+    
+    (function() {
+    // Define the dimensions and margins for the graph
+    var margin = {top: 100, right: 10, bottom: 3000, left: 60},
+        width = 960 - margin.left - margin.right,
+        height = 400 - margin.top - margin.bottom;
+
+    // Append the svg object to the body of the page
+    var svg = d3.select("#staticLineGraphContainer")
+      .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+      .append("g")
+        .attr("transform",
+              "translate(" + margin.left + "," + margin.top + ")");
+
+    // Sample data
+    var data = [
+        {country: "Australia", value: 60681.5},
+        {country: "Austria", value: 65402.3},
+        {country: "Austr3a", value: 65402.3},
+        // Add more countries as needed
+    ];
+
+    // Set the ranges
+    var x = d3.scalePoint().range([0, width]).padding(0.4),
+        y = d3.scaleLinear().range([height, 0]);
+
+    // Scale the range of the data
+    x.domain(data.map(function(d) { return d.country; }));
+    y.domain([0, d3.max(data, function(d) { return d.value; })]);
+
+    // Add the X Axis
+    svg.append("g")
+       .attr("transform", "translate(0," + height + ")")
+       .call(d3.axisBottom(x));
+
+    // Add the Y Axis
+    svg.append("g")
+       .call(d3.axisLeft(y));
+
+    // Add the valueline path.
+    svg.append("path")
+      .data([data])
+      .attr("fill", "none")
+      .attr("stroke", "steelblue")
+      .attr("stroke-width", 2)
+      .attr("d", d3.line()  
+          .x(function(d) { return x(d.country); })
+          .y(function(d) { return y(d.value); })
+      );
+})();
     </script>
+    <div>{@html htmlContentBottom}</div>
 </body>
+    
 </html>
