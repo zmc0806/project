@@ -1,49 +1,51 @@
 <script>
     import { marked } from 'marked';
 
-let markdownText = `# Visualization Project
+let markdownText = `# Whats Gini?
+### The Gini Coefficient is a measure ranging from 0 to 1, where 0 signifies perfect equality (everyone has the same income) and 1 indicates perfect inequality (all wealth is held by a single individual). This statistic helps us understand the nuances of income distribution within a nation, shedding light on societal balance or disparity.
 
-This project visualizes the GDP and GINI coefficients over different years. Explore the data using the links above.`;
+### Dive into our interactive globe and select a year to see the inequality of nations through Gini colors. Lower green values indicate equality; higher reds reveal disparity. Click the legend to filter and explore countries within specific Gini ranges.
+`;
 
 let htmlContent = marked.parse(markdownText);
 
 
-let markdownTextBottom = `# Discoaver More
+let markdownTextBottom = `# Fianlly! We Can Packing UP!
+### This last graph brings together GDP and Gini, allowing us to consider both the wealth of a nation and how that wealth is spread among its people. It’s not just about having a high GDP or a low Gini, but about finding a country that harmoniously balances both. Here lies the nuanced destination of our data-driven journey: countries positioned in the graph's bottom right, boasting both economic abundance and equitable distribution, are where economic well-being for all is more likely to be a reality. If you click on the dots on the graph, you will find out that country is *<u>Luxembourg!</u>*
+`;
+let markdownTextBottom3 = `# Takeways
+### Our exploration concludes with a clear takeaway: real prosperity is not solely in a nation's wealth but in how fairly it's shared. This project illuminates this through interactive visualizations, demonstrating the powerful combination of GDP and the Gini coefficient to reveal the balance of economic health and equity.
 
-Thank you for exploring the GDP and GINI visualizations. Stay curious and keep exploring data!
+### Why is this effective? Because every clickable point on our charts represents a nuanced narrative that interprets abstract numbers into human experience. Through interesting interactions and witty words, we express: In the world economy, fairness and prosperity are equally important. Our visualizations not only demonstrate this, they resonate, ensuring a deeper understanding of what it means to thrive collectively.
 
+## Thank you for your time to explore the economic world with us! We have bottons on the top right to go back to the previous pages if you want review it!
 
-
-
-
-
-
-;dd`;
-
+`;
+let htmlContentBottom3 = marked.parse(markdownTextBottom3);
 let htmlContentBottom = marked.parse(markdownTextBottom);
-let markdownTextMiddle = `# What is GDP Tells us?
+let markdownTextMiddle = `# Rank!
+### As the years change, so do the rankings—watch as countries climb or descend in the quest for economic balance. Lets focus back on 2021. Countries like Slovakia and Slovenia lead with the narrowest wealth gaps, exemplifying greater equality. 
 
-balabalbalabla
+### Toggle between the lowest and highest wealth gaps to reveal the full spectrum of income distribution across the globe. By switching the view, you can instantly identify countries grappling with the most significant disparities, where wealth is less evenly distributed among their populace. 
 `
 ;
 
+let markdownTextMiddle2 = `# Can We Pack Our Bags Now?
+### As we've navigated through separate indicators, a question naturally arises: should one pack their bags for countries with the lowest Gini coefficient, equating it with utopian equality? Not so fast. While a low Gini suggests fairer wealth distribution, it doesn't account for overall economic health.`;
+
 let htmlContentMiddle= marked.parse(markdownTextMiddle);
+let htmlContentMiddle2= marked.parse(markdownTextMiddle2);
 
   let url_gdp = "https://zmc0806.github.io/project/gdp"; 
   let url_gini = "https://zmc0806.github.io/project/gini"; 
   let url_home = "https://zmc0806.github.io/project/home";
 </script>
-<a href="{url_home}" target="_blank" rel="noopener noreferrer">HOME</a>
-
-<a href="{url_gdp}" target="_blank" rel="noopener noreferrer">GDP</a>
-
-<a href="{url_gini}" target="_blank" rel="noopener noreferrer">GINI</a>
-
 <!DOCTYPE html>
 <html lang="en">
 
     <head>
         <style>
+            
           .bar {
             fill: steelblue;
         }
@@ -58,6 +60,47 @@ let htmlContentMiddle= marked.parse(markdownTextMiddle);
             stroke: #000;
             shape-rendering: crispEdges;
         }
+        /* Styles for Home link container */
+#home-link-container {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
+#home-link-container a {
+  /* Style for your Home link */
+  padding: 10px;
+  background: #f8f9fa;
+  color: #007bff;
+  text-decoration: none;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+/* Styles for bottom right link container */
+#bottom-right-link-container {
+  position: static;
+  bottom: 20px;
+  right: 20px;
+}
+
+#bottom-right-link-container a {
+  /* Style for your links */
+  display: inline-block;
+  margin-left: 10px;
+  padding: 10px;
+  background: #f8f9fa;
+  color: #007bff;
+  text-decoration: none;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+#bottom-right-link-container a:hover,
+#home-link-container a:hover {
+  background: #e2e6ea;
+}
+
         .info-box {
   /* Other styles... */
   font-size: 1.5em; /* Bigger text size */
@@ -73,7 +116,7 @@ let htmlContentMiddle= marked.parse(markdownTextMiddle);
         }
         #lineGraphContainer {
     position: absolute;
-    top: 110px; /* Adjust as needed */
+    top: 300px; /* Adjust as needed */
     right: 250px; /* Adjust as needed */
     width: 300px; /* Maintain or adjust size as needed */
     height: 200px; /* Maintain or adjust size as needed */
@@ -82,6 +125,11 @@ let htmlContentMiddle= marked.parse(markdownTextMiddle);
     </head>
 <body>
     <!-- Dropdown for selecting a year -->
+    <div id="home-link-container">
+        <a href="{url_home}" target="_blank" rel="noopener noreferrer">HOME</a>
+        <a href="{url_gdp}" target="_blank" rel="noopener noreferrer">GDP</a>
+      </div>
+    <div>{@html htmlContent}</div>
     <label for="yearSelector" style="font-size: 20px;">Which year are you interested in?</label>
     <select id="yearSelector" style="font-size: 15px;" ></select>
     <div id="lineGraphContainer"></div>
@@ -100,8 +148,10 @@ let htmlContentMiddle= marked.parse(markdownTextMiddle);
             <option value="bottom">Countries with the HIGHEST wealth gap</option>
             </select>
         <div id="barChartContainer"></div> <!-- Container for the bar chart -->
+        <div>{@html htmlContentMiddle2}</div>
         <div>{@html htmlContentBottom}</div>
-        <div id="scatterPlotContainer" style="width: 960px; height: 500px;"></div>
+        <div id="scatterPlotContainer" style="width: 960px; height: 600px;"></div>
+        <div>{@html htmlContentBottom3}</div>
     </svg>
     <!-- D3.js and TopoJSON for map rendering -->
     <script src="https://d3js.org/d3.v4.min.js"></script>
@@ -185,7 +235,7 @@ const giniColors = ["green", "orange", "red","purple"]; // Directly using color 
 // After setting up the legend segments
 
 // Define the text for each label based on the giniRanges
-const giniLabels = ["<= 0.3", "0.3 - 0.6", "0.6 - 0.7", ">= 0.7"];
+const giniLabels = ["<= 0.3 Low", "0.3 - 0.6 Meidan", "0.6 - 0.7 High", ">= 0.7 Extreme High"];
 
 // Append labels to the legend
 legendSvg.selectAll("text")
@@ -332,7 +382,7 @@ svgContainer.append("text")
 
             // Populate the year selector with unique years from the data
             
-            const years = Array.from(new Set(data.map(d => d.Year))).sort();
+            const years = Array.from(new Set(data.map(d => d.Year))).sort((a, b) => b - a);
             const yearSelector = d3.select("#yearSelector");
             years.forEach(year => {
                 yearSelector.append("option").text(year).attr("value", year);
@@ -566,7 +616,7 @@ function createScatterPlot(data) {
                + "<br/><strong>Gini:</strong> " + d.gini)
          .style("opacity", 1)
          .style("right", "50px")
-         .style("top", "1800px")
+         .style("top", "2300px")
          .style("position", "absolute")
          .style("background", "white")
          .style("padding", "30px")

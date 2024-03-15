@@ -1,31 +1,31 @@
 <script>
   import { marked } from 'marked';
 
-  let markdownText = `# Visualization Project
-
-This project visualizes the GDP and GINI coefficients over different years. Explore the data using the links above.`;
+  let markdownText = `# Explore the Visualization!
+  ### First! Select a year. Watch as our interactive globe comes alive with colors, each hue representing the economic standing of a country. Hover and click to unearth a narrative, a line chart detailing the GDP trajectory over time – the heartbeat of economies pulsing on your screen.
+`;
 
   let htmlContent = marked.parse(markdownText);
 
+  let markdownTextMiddle = `# Interpreting GDP
+  #### As you navigate through the vivid tapestry of our interactive globe, I invite you to pause and cast your eyes upon the year 2021. By looking at the bar chart showing below. We notice taht *<u>Ireland</u>* emerges as a dark horse, boasting a higher GDP than the *<u>United States</u>*. 
+### For those of us residing in the bustling cities and quiet towns of America, a question dangles in the air – is it time to pack our bags to living in this Emerald Isle?
+`;
+  let markdownTextBottom = `# BUT!
+  #### Hold that thought, and let's not rush to conclusions or the nearest airport! Before you start looking up Irish Gaelic lessons, take a moment to delve into the next chart, one that paints a different picture. When we shift our gaze from GDP to average annual income, the stars realign, and it's the US that shines brighter in terms of earnings.
+  `;
+  let markdownTextBottom2 = `# Why? GDP vs. Personal Wealth: Unveiling the Truth
+  #### This revelation might seem puzzling at first – how can a country with a higher GDP not necessarily be the land of greater personal fortunes? Here lies the crux of a common misconception: GDP, while a measure of a country's economic performance, isn't a direct passport to personal wealth. It's a national scorecard, not an individual one. The wealth of a nation doesn't always trickle down evenly to its citizens – factors like tax policies, social services, cost of living, and income distribution play significant roles in shaping the financial realities of the populace.
 
-  let markdownTextBottom = `# Discoaver More
+  ### So, while Ireland's impressive GDP is commendable, it doesn't necessarily mean that every Irish resident is walking around with deeper pockets than their American counterparts.
 
-Thank you for exploring the GDP and GINI visualizations. Stay curious and keep exploring data!
-
-
+  ### Now, with this newfound insight, let's turn the page to the *<u>Gini Coefficient</u>*, where we will uncover the layers of income inequality and explore the landscape of wealth distribution. Join me as we continue to unravel the complex yarn of economics and society....
 
 
-
-
-
-;dd`;
+  `;
 
   let htmlContentBottom = marked.parse(markdownTextBottom);
-  let markdownTextMiddle = `# What is GDP Tells us?
-
-  balabalbalabla
-  `
-  ;
+  let htmlContentBottom2 = marked.parse(markdownTextBottom2);
 
   let htmlContentMiddle= marked.parse(markdownTextMiddle);
 
@@ -34,21 +34,78 @@ Thank you for exploring the GDP and GINI visualizations. Stay curious and keep e
   let url_gini = "https://zmc0806.github.io/project/gini"; 
   let url_home = "https://zmc0806.github.io/project/home";
 </script>
-<a href="{url_home}" target="_blank" rel="noopener noreferrer">HOME</a>
-
-<a href="{url_gdp}" target="_blank" rel="noopener noreferrer">GDP</a>
-
-<a href="{url_gini}" target="_blank" rel="noopener noreferrer">GINI</a>
 
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <style>
+            /* Styles for Home link container */
+#home-link-container {
+  position: absolute;
+  top: 8px;
+  right: 5px;
+}
+
+#home-link-container a {
+  /* Style for your Home link */
+  padding: 5px;
+  background: #f8f9fa;
+  color: #007bff;
+  text-decoration: none;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+/* Styles for bottom right link container */
+#bottom-right-link-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+}
+
+#bottom-right-link-container a {
+  /* Style for your links */
+  display: inline-block;
+  margin-left: 10px;
+  padding: 10px;
+  background: #f8f9fa;
+  color: #007bff;
+  text-decoration: none;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+#bottom-right-link-container a:hover,
+#home-link-container a:hover {
+  background: #e2e6ea;
+}
+
+#link-container {
+  bottom: 20px; /* Adjust as needed */
+  right: 20px; /* Adjust as needed */
+  text-align: right;
+}
+
+#link-container a {
+  display: inline-block;
+  margin-left: 10px; /* Adds space between the buttons if needed */
+  padding: 10px;
+  background: #f8f9fa; /* Example background color */
+  color: #007bff; /* Example text color */
+  text-decoration: none;
+  border: 1px solid #ddd; /* Example border */
+  border-radius: 5px; /* Rounded corners */
+}
+
+#link-container a:hover {
+  background: #e2e6ea; /* Darker background on hover */
+}
+
         body {
-        min-height: 4000px; /* Adjust this value to change the page length */
+        min-height: 2500px; /* Adjust this value to change the page length */
       }
       #bar2 {
-  min-height: 500px; /* or whatever height you desire */
+  min-height: 600px; /* or whatever height you desire */
 }
           .bar {
             fill: steelblue;
@@ -81,30 +138,37 @@ Thank you for exploring the GDP and GINI visualizations. Stay curious and keep e
         }
         #lineGraphContainer {
     position: absolute;
-    top: 110px; /* Adjust as needed */
+    top: 200px; /* Adjust as needed */
     right: 250px; /* Adjust as needed */
     width: 300px; /* Maintain or adjust size as needed */
-    height: 1000px; /* Maintain or adjust size as needed */
+    height: 900px; /* Maintain or adjust size as needed */
 }
+
         </style>
     </head>
 <body>
     
     <!-- Dropdown for selecting a year -->
-    <label for="yearSelector" style="font-size: 20px;">Which year are you interested in?</label>
-    <select id="yearSelector" style="font-size: 15px;" ></select>
+    <div id="home-link-container">
+        <a href="{url_home}" target="_blank" rel="noopener noreferrer">Back To HOME Page</a>
+      </div>
     <div id="visualizationContainer" style="display: flex; justify-content: space-between; align-items: start;">
         <div id="lineGraphContainer" style="width: 300px; height: 200px;">
             <!-- Line graph will be rendered here by Plotly -->
         </div>
     </div>
     <div>{@html htmlContent}</div>
+    <label for="yearSelector" style="font-size: 20px;">Which year are you interested in?</label>
+    <select id="yearSelector" style="font-size: 15px;" ></select>
     <svg>
         <div>{@html htmlContentMiddle}</div>
         <div id="barChartContainer"></div> <!-- Container for the bar chart -->
         <div>{@html htmlContentBottom}</div>
         <div id="bar2" style="width: 960px; height: 500px;"></div>
-
+        <div>{@html htmlContentBottom2}</div>
+        <div id="link-container">
+            <a href="{url_gini}" target="_blank" rel="noopener noreferrer">Let's Explore What is Gini Coefficient!</a>
+          </div>
     </svg>
     <!-- D3.js and TopoJSON for map rendering -->
     <script src="https://d3js.org/d3.v4.min.js"></script>
@@ -222,7 +286,7 @@ Thank you for exploring the GDP and GINI visualizations. Stay curious and keep e
             l: 50,
             r: 50,
             b: 50,
-            t: 50,
+            t: 30,
             pad: 4
         },
     };
@@ -233,7 +297,7 @@ Thank you for exploring the GDP and GINI visualizations. Stay curious and keep e
 // Add a title to the SVG
 svgContainer.append("text")
   .attr("x", width / 2  ) // This will position the text in the center of the SVG
-  .attr("y", margin.top + 20) // This positions the text from the top of the SVG
+  .attr("y", margin.top + 10) // This positions the text from the top of the SVG
   .attr("text-anchor", "middle") // This centers the text (horizontally)
   .style("font-size", "24px") // Change the font size as needed
   .style("font-weight", "bold") // Optional: makes the text bold
@@ -252,7 +316,7 @@ svgContainer.append("text")
 
             // Populate the year selector with unique years from the data
             
-            const years = Array.from(new Set(data.map(d => d.Year))).sort();
+            const years = Array.from(new Set(data.map(d => d.Year))).sort((a, b) => b - a);
             const yearSelector = d3.select("#yearSelector");
             years.forEach(year => {
                 yearSelector.append("option").text(year).attr("value", year);
@@ -439,7 +503,7 @@ svgContainer.append("text")
         .attr("text-anchor", "middle")
         .style("font-size", "20px")
         .style("text-decoration", "underline")
-        .text("Top 15 Countries by Income(thousand)");
+        .text("Top 15 Countries by Average  Annual Income");
 
     // Load and process the data
     d3.csv("income.csv", function (error, data) {
