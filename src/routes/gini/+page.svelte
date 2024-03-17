@@ -1,7 +1,7 @@
 <script>
     import { marked } from 'marked';
 
-let markdownText = `# Whats Gini?
+let markdownText = `# What's Gini?
 ### The Gini Coefficient is a measure ranging from 0 to 1, where 0 signifies perfect equality (everyone has the same income) and 1 indicates perfect inequality (all wealth is held by a single individual). This statistic helps us understand the nuances of income distribution within a nation, shedding light on societal balance or disparity.
 
 ### Dive into our interactive globe and select a year to see the inequality of nations through Gini colors. Lower green values indicate equality; higher reds reveal disparity. Click the legend to filter and explore countries within specific Gini ranges.

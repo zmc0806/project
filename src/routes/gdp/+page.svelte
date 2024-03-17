@@ -2,17 +2,17 @@
   import { marked } from 'marked';
 
   let markdownText = `# Explore the Visualization!
-  ### First! Select a year. Watch as our interactive globe comes alive! Hover and click to unearth a narrative, a line chart detailing the GDP trajectory over time – the heartbeat of economies pulsing on your screen.
+  ### First! Select a year. Watch as our interactive globe comes alive! Hover to see a line chart detailing the GDP trajectory over time – the heartbeat of economies pulsing on your screen.
 `;
 
   let htmlContent = marked.parse(markdownText);
 
   let markdownTextMiddle = `# Interpreting GDP
-  #### As you navigate through the vivid tapestry of our interactive globe, I invite you to pause and cast your eyes upon the year 2021. By looking at the bar chart showing below. We notice taht *<u>Ireland</u>* emerges as a dark horse, boasting a higher GDP than the *<u>United States</u>*. 
+  #### As you navigate through the vivid tapestry of our interactive globe, I invite you to pause and cast your eyes upon the year 2021. By looking at the bar chart showing below. We notice taht *<u>Ireland</u>* emerges as a dark horse, boasting a higher GDP than the *<u>United States</u>*. (You may also change the year to see how the bar chart is changing! Right now, Lets focus on year 2021)
 ### For those of us residing in the bustling cities and quiet towns of America, a question dangles in the air – is it time to pack our bags to living in this Emerald Isle?
 `;
   let markdownTextBottom = `# BUT!
-  #### Hold that thought, and let's not rush to conclusions or the nearest airport! Before you start looking up Irish Gaelic lessons, take a moment to delve into the next chart, one that paints a different picture. When we shift our gaze from GDP to average annual income, the stars realign, and it's the US that shines brighter in terms of earnings.
+  #### Hold that thought, and let's not rush to conclusions or the nearest airport! Before you start looking up Irish Gaelic lessons, take a moment to delve into the next chart, one that paints a different picture. When we shift our gaze from GDP to average annual income, the stars realign, and it's the US that shines brighter in terms of earnings. (Hover to see the actual values)
   `;
   let markdownTextBottom2 = `# Why? GDP vs. Personal Wealth: Unveiling the Truth
   #### This revelation might seem puzzling at first – how can a country with a higher GDP not necessarily be the land of greater personal fortunes? Here lies the crux of a common misconception: GDP, while a measure of a country's economic performance, isn't a direct passport to personal wealth. It's a national scorecard, not an individual one. The wealth of a nation doesn't always trickle down evenly to its citizens – factors like tax policies, social services, cost of living, and income distribution play significant roles in shaping the financial realities of the populace.
