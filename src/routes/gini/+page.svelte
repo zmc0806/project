@@ -180,7 +180,7 @@ const giniColorScale = d3.scaleLinear()
         let countryCasesMap = {};
         let csvData; // Global variable to store CSV data
         const margin = { top: 20, right: 240, bottom: 70, left: 70 },
-              barChartWidth = 1000 ,
+              barChartWidth = 900 ,
               barChartHeight = 500;
 
         const xScale = d3.scaleLinear()
@@ -374,7 +374,7 @@ svgContainer.append("text")
             
   const barSvg = d3.select('#barChartContainer')
     .append('svg')
-    .attr('width', barChartWidth + margin.left + margin.right)
+    .attr('width', barChartWidth + margin.left + margin.right + 101)
     .attr('height', barChartHeight + margin.top + margin.bottom)
     .append('g')
     .attr('transform', `translate(${margin.left},${margin.top})`);
