@@ -10,7 +10,7 @@ async function navigateAndRefresh(url) {
 const projectTitle = "Beyond GDP: Unveiling Wealth's True Colors";
 const description = "Imagine a world where wealth is a reflection of a country's economic power. Now, think again. In our quest for prosperity, could the numbers be deceiving us? Gross Domestic Product (GDP) is often hailed as the ultimate measure of a country's economic success. It represents the total dollar value of all goods and services produced over a specific time period – the higher the GDP, the 'richer' the country is perceived to be. So I guess if I want to be rich, I should go to the most highest GDP country, umm Right?";
 const group = 'Team: Data Genius!'
-const authors = 'Mianchen Zhang and Yulin Chen';
+const authors = 'Yulin Chen and Mianchen Zhang';
 </script>
 <button on:click={() => navigateAndRefresh(`${base}/gdp`)}> Lets Explore the GDP world!</button>
 
