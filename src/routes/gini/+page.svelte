@@ -10,7 +10,7 @@ let markdownText = `# What's Gini?
 let htmlContent = marked.parse(markdownText);
 
 
-let markdownTextBottom = `# Fianlly! We Can Packing UP!
+let markdownTextBottom = `# Let's Combine! And Start Packing UP!
 ### This last graph brings together GDP and Gini, allowing us to consider both the wealth of a nation and how that wealth is spread among its people. It’s not just about having a high GDP or a low Gini, but about finding a country that harmoniously balances both. Here lies the nuanced destination of our data-driven journey: countries positioned in the graph's bottom right, boasting both economic abundance and equitable distribution, are where economic well-being for all is more likely to be a reality. If you click on the dots on the graph, you will find out that country is *<u>Luxembourg!</u>*
 `;
 let markdownTextBottom3 = `# Takeways
@@ -24,7 +24,7 @@ let markdownTextBottom3 = `# Takeways
 let htmlContentBottom3 = marked.parse(markdownTextBottom3);
 let htmlContentBottom = marked.parse(markdownTextBottom);
 let markdownTextMiddle = `# Rank!
-### As the years change, so do the rankings—watch as countries climb or descend in the quest for economic balance. Lets focus back on 2021. Countries like Slovenia and Ukraine lead with the narrowest wealth gaps, exemplifying greater equality. 
+### As the years change, so do the rankings—watch as countries climb or descend in the quest for economic balance. Let's focus back on 2021. Countries like Slovenia and Ukraine lead with the narrowest wealth gaps, exemplifying greater equality. 
 
 ### Toggle between the lowest and highest wealth gaps to reveal the full spectrum of income distribution across the globe. By switching the view, you can instantly identify countries grappling with the most significant disparities, where wealth is less evenly distributed among their populace. 
 `

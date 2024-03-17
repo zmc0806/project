@@ -8,7 +8,7 @@
   let htmlContent = marked.parse(markdownText);
 
   let markdownTextMiddle = `# Interpreting GDP
-  #### As you navigate through the vivid tapestry of our interactive globe, I invite you to pause and cast your eyes upon the year 2021. By looking at the bar chart showing below. We notice taht *<u>Ireland</u>* emerges as a dark horse, boasting a higher GDP than the *<u>United States</u>*. (You may also change the year to see how the bar chart is changing! Right now, Lets focus on year 2021)
+  #### As you navigate through the vivid tapestry of our interactive globe, I invite you to pause and cast your eyes upon the year 2021. By looking at the bar chart showing below. We notice taht *<u>Ireland</u>* emerges as a dark horse, boasting a higher GDP than the *<u>United States</u>*. (You may also change the year to see how the bar chart is changing! Right now, Let's focus on year 2021)
 ### For those of us residing in the bustling cities and quiet towns of America, a question dangles in the air – is it time to pack our bags to living in this Emerald Isle?
 `;
   let markdownTextBottom = `# BUT!
