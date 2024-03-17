@@ -2,7 +2,7 @@
   import { marked } from 'marked';
 
   let markdownText = `# Explore the Visualization!
-  ### First! Select a year. Watch as our interactive globe comes alive with colors, each hue representing the economic standing of a country. Hover and click to unearth a narrative, a line chart detailing the GDP trajectory over time – the heartbeat of economies pulsing on your screen.
+  ### First! Select a year. Watch as our interactive globe comes alive! Hover and click to unearth a narrative, a line chart detailing the GDP trajectory over time – the heartbeat of economies pulsing on your screen.
 `;
 
   let htmlContent = marked.parse(markdownText);
